@@ -6,6 +6,9 @@
 *.swp
 .buildlog/
 .history
+.idea/
+.metadata
+*.iml
 
 
 
@@ -119,5 +122,8 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 
 google-services.json
-firebase_options.dart
 GoogleService-Info.plist
+firebase_options.dart
+**/google-services.json
+**/GoogleService-Info.plist
+**/firebase_options.dart

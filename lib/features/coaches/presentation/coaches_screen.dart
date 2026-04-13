@@ -43,6 +43,13 @@ class CoachesScreen extends StatelessWidget {
                       'Remote Config controls each coach persona before the Vertex AI chat session starts.',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
+                    if (scope.firebaseInitializationError != null) ...[
+                      const SizedBox(height: 16),
+                      _FirebaseSetupNotice(
+                        message:
+                            'Firebase config files are missing in this workspace. The UI and local history work, but AI chat will respond after you add your own Firebase project files.',
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -133,6 +140,43 @@ class _CoachCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FirebaseSetupNotice extends StatelessWidget {
+  const _FirebaseSetupNotice({
+    required this.message,
+  });
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF7E8),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: const Color(0xFFE8C97A),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(Icons.info_outline_rounded),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                message,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+          ],
         ),
       ),
     );
