@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../core/di/app_scope.dart';
@@ -7,16 +8,23 @@ import 'app.dart';
 Future<void> bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  FirebaseException? firebaseInitializationError;
+  String? firebaseSetupError;
 
   try {
-    await Firebase.initializeApp();
+    if (kIsWeb) {
+      firebaseSetupError =
+          'Firebase web options are missing. Run flutterfire configure and initialize Firebase with DefaultFirebaseOptions.currentPlatform.';
+    } else {
+      await Firebase.initializeApp();
+    }
   } on FirebaseException catch (error) {
-    firebaseInitializationError = error;
-  } catch (_) {}
+    firebaseSetupError = error.message ?? error.toString();
+  } catch (error) {
+    firebaseSetupError = error.toString();
+  }
 
   final scope = await AppScope.create(
-    firebaseInitializationError: firebaseInitializationError,
+    firebaseSetupError: firebaseSetupError,
   );
 
   runApp(WellnessCoachApp(scope: scope));

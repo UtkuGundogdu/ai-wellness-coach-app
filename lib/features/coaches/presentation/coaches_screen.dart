@@ -43,11 +43,11 @@ class CoachesScreen extends StatelessWidget {
                       'Remote Config controls each coach persona before the Vertex AI chat session starts.',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    if (scope.firebaseInitializationError != null) ...[
+                    if (scope.firebaseSetupError != null) ...[
                       const SizedBox(height: 16),
                       _FirebaseSetupNotice(
                         message:
-                            'Firebase config files are missing in this workspace. The UI and local history work, but AI chat will respond after you add your own Firebase project files.',
+                            'Firebase is not initialized for this build. The app is running in demo mode with local fallback responses. Add your Firebase config, especially for web with firebase_options.dart, to switch to real Firebase AI and Remote Config.',
                       ),
                     ],
                   ],

@@ -1,12 +1,11 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class RemoteCoachConfigService {
   RemoteCoachConfigService({
-    required FirebaseException? firebaseInitializationError,
-  }) : _firebaseInitializationError = firebaseInitializationError;
+    required String? firebaseSetupError,
+  }) : _firebaseSetupError = firebaseSetupError;
 
-  final FirebaseException? _firebaseInitializationError;
+  final String? _firebaseSetupError;
 
   FirebaseRemoteConfig? _remoteConfig;
   bool _isInitialized = false;
@@ -29,7 +28,7 @@ class RemoteCoachConfigService {
       return;
     }
 
-    if (_firebaseInitializationError != null) {
+    if (_firebaseSetupError != null) {
       _isInitialized = true;
       return;
     }

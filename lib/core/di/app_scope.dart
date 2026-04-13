@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,24 +10,28 @@ class AppScope {
   AppScope({
     required this.coachRepository,
     required this.chatRepository,
-    required this.firebaseInitializationError,
+    required this.firebaseSetupError,
   });
 
   final CoachRepository coachRepository;
   final ChatRepository chatRepository;
-  final FirebaseException? firebaseInitializationError;
+  final String? firebaseSetupError;
 
   static Future<AppScope> create({
-    required FirebaseException? firebaseInitializationError,
+    required String? firebaseSetupError,
   }) async {
     final sharedPreferences = await SharedPreferences.getInstance();
 
     final remoteConfigService = RemoteCoachConfigService(
-      firebaseInitializationError: firebaseInitializationError,
+      firebaseSetupError: firebaseSetupError,
     );
-    final aiChatService = FirebaseAiChatService(
-      firebaseInitializationError: firebaseInitializationError,
-    );
+    final aiChatService = firebaseSetupError == null
+        ? FirebaseAiChatService(
+            firebaseSetupError: firebaseSetupError,
+          )
+        : MockAiChatService(
+            modeLabel: 'demo',
+          );
 
     return AppScope(
       coachRepository: CoachRepository(
@@ -38,7 +41,7 @@ class AppScope {
         sharedPreferences: sharedPreferences,
         aiChatService: aiChatService,
       ),
-      firebaseInitializationError: firebaseInitializationError,
+      firebaseSetupError: firebaseSetupError,
     );
   }
 }
